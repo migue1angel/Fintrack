@@ -3,6 +3,7 @@ using FinTrack.Common.Auth;
 using FinTrack.Common.Behaviors;
 using FinTrack.Common.Contracts;
 using FinTrack.Common.Persistence;
+using FinTrack.Modules.Budgets;
 using FinTrack.Modules.Budgets.Features.Create;
 using FinTrack.Modules.Budgets.Features.GetSummary;
 using FinTrack.Modules.Goals;
@@ -49,10 +50,11 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddUsersModule();
 builder.Services.AddTransactionsModule();
 builder.Services.AddGoalsModule();
+builder.Services.AddBudgetsModule();
 
 
 builder.Services
-    .ConfigureHttpJsonOptions(options => // ← línea 53                                                                                                                                                    
+    .ConfigureHttpJsonOptions(options =>                                                                                                                                                     
         options.SerializerOptions.Converters.Add(
             new System.Text.Json.Serialization.JsonStringEnumConverter()));
 
@@ -131,7 +133,7 @@ app.MapPost("/transactions", async (
     var idempotencyKey = http.Request.Headers["Idempotency-Key"]
         .FirstOrDefault();
 
-    var command = new CreateTransactionCommnad(
+    var command = new CreateTransactionCommand(
         userId.Value,
         body.Amount,
         body.Type,

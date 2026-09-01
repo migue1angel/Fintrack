@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 namespace FinTrack.Modules.Transactions.Features.Create;
 
 public class CreateTransactionHandler(ApplicationDbContext context, IMediator mediator)
-    : IRequestHandler<CreateTransactionCommnad, ErrorOr<CreateTransactionResult>>
+    : IRequestHandler<CreateTransactionCommand, ErrorOr<CreateTransactionResult>>
 {
-    public async Task<ErrorOr<CreateTransactionResult>> Handle(CreateTransactionCommnad command,
+    public async Task<ErrorOr<CreateTransactionResult>> Handle(CreateTransactionCommand command,
         CancellationToken cancellationToken)
     {
         if (command.IdempotencyKey is not null)

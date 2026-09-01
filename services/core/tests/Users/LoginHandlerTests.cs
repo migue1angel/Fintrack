@@ -5,7 +5,7 @@ using FinTrack.Modules.Users.Features.Login;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 
-namespace FinTrack.Tests.Modules.Users.Tests;
+namespace FinTrack.Tests.Users;
 
 public class LoginHandlerTests
 {

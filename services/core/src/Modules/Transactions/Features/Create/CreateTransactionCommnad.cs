@@ -4,7 +4,7 @@ using MediatR;
 
 namespace FinTrack.Modules.Transactions.Features.Create;
 
-public record CreateTransactionCommnad(
+public record CreateTransactionCommand(
     Guid UserId,
     decimal Amount,
     TransactionType Type,

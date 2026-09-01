@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace FinTrack.Modules.Transactions.Features.Create;
 
-public class CreateTransactionCommandValidator: AbstractValidator<CreateTransactionCommnad>
+public class CreateTransactionCommandValidator: AbstractValidator<CreateTransactionCommand>
 {
     
     public CreateTransactionCommandValidator()

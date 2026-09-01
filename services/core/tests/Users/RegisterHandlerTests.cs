@@ -1,10 +1,9 @@
 ﻿using ErrorOr;
 using FinTrack.Modules.Users.Features.Register;
-using FinTrack.Tests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinTrack.Tests.Modules.Users.Tests;
+namespace FinTrack.Tests.Users;
 
 public class RegisterHandlerTests
 {

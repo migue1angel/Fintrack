@@ -23,6 +23,7 @@ packages/
 
 ## Rider / JetBrains
 .idea/
+.vscode/
 *.sln.DotSettings.user
 *.DotSettings.user
 *.DotSettings.user.*
@@ -45,3 +46,6 @@ secrets.json
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+## Custom files
+learning
