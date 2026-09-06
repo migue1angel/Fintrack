@@ -1,8 +1,5 @@
 ﻿# ADR-NNN: [Goals Module remains in Core]
 
-**Date:** 22-03-2026
-
-
 **Status:**  Accepted 
 
 ## Context

@@ -1,4 +1,5 @@
-﻿using FinTrack.Modules.Budgets.Entities;
+﻿using FinTrack.Common.Outbox;
+using FinTrack.Modules.Budgets.Entities;
 using FinTrack.Modules.Goals.Entities;
 using FinTrack.Modules.Transactions.Entities;
 using FinTrack.Modules.Users.Entities;
@@ -12,6 +13,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<TransactionEntity> Transactions => Set<TransactionEntity>();
     public DbSet<GoalEntity> Goals => Set<GoalEntity>();
     public DbSet<BudgetEntity> Budgets => Set<BudgetEntity>();
+    public DbSet<OutboxEventEntity> OutboxEvents => Set<OutboxEventEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

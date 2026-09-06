@@ -2,6 +2,7 @@ using ErrorOr;
 using FinTrack.Common.Auth;
 using FinTrack.Common.Behaviors;
 using FinTrack.Common.Contracts;
+using FinTrack.Common.Outbox;
 using FinTrack.Common.Persistence;
 using FinTrack.Modules.Budgets;
 using FinTrack.Modules.Budgets.Features.Create;
@@ -16,11 +17,11 @@ using FinTrack.Modules.Transactions.Features.Create;
 using FinTrack.Modules.Transactions.Features.GetById;
 using FinTrack.Modules.Transactions.Features.GetHistory;
 using FinTrack.Modules.Users;
-using FinTrack.Modules.Users.Errors;
 using FinTrack.Modules.Users.Features.GetMe;
 using FinTrack.Modules.Users.Features.Login;
 using FinTrack.Modules.Users.Features.Register;
 using FluentValidation;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,13 +39,27 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         )
         .UseSnakeCaseNamingConvention()
 );
+builder.Services.AddMassTransit(config =>
+{
+    config.UsingRabbitMq((context, rabbitMq)=>
+    {
+        rabbitMq.Host(builder.Configuration["RabbitMq:Host"]!,
+        "/",
+        host =>
+        {
+            host.Username(builder.Configuration["RabbitMq:Username"]!);
+            host.Password(builder.Configuration["RabbitMq:Password"]!); 
+        }
+        );
+    });
+});
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
 
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
-
+builder.Services.AddHostedService<OutboxPublisherService>();
 
 // Modules-------------
 builder.Services.AddUsersModule();

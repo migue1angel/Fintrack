@@ -1,4 +1,6 @@
-﻿using ErrorOr;
+﻿using System.Text.Json;
+using ErrorOr;
+using FinTrack.Common.Outbox;
 using FinTrack.Common.Persistence;
 using FinTrack.Modules.Transactions.Entities;
 using FinTrack.Modules.Transactions.Events;
@@ -7,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinTrack.Modules.Transactions.Features.Create;
 
-public class CreateTransactionHandler(ApplicationDbContext context, IMediator mediator)
+public class CreateTransactionHandler(ApplicationDbContext context)
     : IRequestHandler<CreateTransactionCommand, ErrorOr<CreateTransactionResult>>
 {
     public async Task<ErrorOr<CreateTransactionResult>> Handle(CreateTransactionCommand command,
@@ -35,14 +37,28 @@ public class CreateTransactionHandler(ApplicationDbContext context, IMediator me
             IdempotencyKey = command.IdempotencyKey,
             CreatedAt = DateTime.UtcNow
         };
-
+        var outboxEvent = new OutboxEventEntity
+        {
+            Id = Guid.NewGuid(),
+            EventType = nameof(TransactionCreatedEvent),
+            Payload = JsonSerializer.Serialize(new TransactionCreatedEvent(
+                transaction.Id,
+                transaction.UserId,
+                transaction.Amount,
+                transaction.Type,
+                transaction.Category,
+                transaction.TransactionDate,
+                DateTime.UtcNow
+            )),
+            CreatedAt = DateTime.UtcNow
+        };
 
         await context.Transactions.AddAsync(transaction, cancellationToken);
+        await context.OutboxEvents.AddAsync(outboxEvent, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
-
-        await mediator.Publish(new TransactionCreatedEvent(transaction.Id, transaction.UserId, transaction.Amount,
-            transaction.Type, transaction.Category, transaction.TransactionDate,
-            DateTime.UtcNow), cancellationToken);
+        // await mediator.Publish(new TransactionCreatedEvent(transaction.Id, transaction.UserId, transaction.Amount,
+        //     transaction.Type, transaction.Category, transaction.TransactionDate,
+        //     DateTime.UtcNow), cancellationToken);
 
         return new CreateTransactionResult(transaction.Id, WasDuplicate: false);
     }

@@ -1,8 +1,5 @@
 ﻿# ADR-NNN: [Monolito Modular antes de microservicios]
 
-**Fecha:** 2026-03-19
-
-
 **Estado:**  Aceptado 
 
 ## Contexto

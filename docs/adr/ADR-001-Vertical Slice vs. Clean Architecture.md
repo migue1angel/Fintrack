@@ -1,6 +1,5 @@
 ﻿# ADR-001: [Clean Architecture vs Vertical Slice]
 
-**Fecha:** 2026-03-19  
 **Estado:** Aceptado 
 
 ## Contexto
@@ -8,7 +7,6 @@
 FinTrack is being developed as a project focused on:
 
 - Serverless architecture
-- AWS Lambda
 - Event-Driven Architecture
 - CQRS
 - Vertical Slice Architecture

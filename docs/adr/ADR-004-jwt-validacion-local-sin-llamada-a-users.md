@@ -1,8 +1,5 @@
 ﻿# ADR-NNN: [jwt-validacion-local-sin-llamada-a-users]
 
-**Fecha:** 22-03-2026
-
-
 **Estado:** Aceptado 
 
 ## Contexto
